@@ -15,9 +15,20 @@ pipeline {
 
     stage('test') {
       steps {
-        sh './jenkins/scripts/test.sh'
+        sh 'npm run test'
       }
     }
 
+    stage('build docker image') {
+      steps {
+        sh 'echo "build docker imagen"'
+      }
+    }
+
+    stage('deploy') {
+      steps {
+        sh 'echo "build deploy"'
+      }
+    }
   }
 }
