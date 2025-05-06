@@ -6,12 +6,21 @@ pipeline {
     }
 
   }
+
+  environment {
+    BRANCH = "${env.BRANCH_NAME}"
+    HOST_PORT = "${env.BRANCH_NAME == 'main'? '3000' : '3001'}"
+    IMAGE_NAME = "${env.BRANCH_NAME == 'main' ? 'nodemain' : 'nodedev}"
+    TAG = 'v1.0.0'
+  }
+
   stages {
     stage('build') {
       steps {
         sh 'npm install'
       }
     }
+  
 
     stage('test') {
       steps {
@@ -19,9 +28,15 @@ pipeline {
       }
     }
 
+    stage('build') {
+      steps {
+        sh 'npm run build'
+      }
+    }
+
     stage('build docker image') {
       steps {
-        sh 'echo "build docker imagen"'
+        sh 'docker build -t $IMAGE_NAME:$TAG'
       }
     }
 
